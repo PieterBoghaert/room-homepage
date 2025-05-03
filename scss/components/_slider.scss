@@ -57,13 +57,13 @@
   &::scroll-button(left) {
     content: "";
     inset-inline-end: calc(anchor(end) + 80px);
-    background-image: url("./images/icon-angle-left.svg");
+    background-image: url("./../../images/icon-angle-left.svg");
   }
 
   &::scroll-button(right) {
     content: "";
     inset-inline-end: calc(anchor(end));
-    background-image: url("./images/icon-angle-right.svg");
+    background-image: url("./../../images/icon-angle-right.svg");
   }
 
   &__item {
@@ -97,7 +97,7 @@
     &::after {
       content: "";
       display: inline-block;
-      background-image: url("./images/icon-arrow.svg");
+      background-image: url("./../../images/icon-arrow.svg");
       inline-size: 40px;
       block-size: 12px;
       margin-inline-start: 1.2em;
