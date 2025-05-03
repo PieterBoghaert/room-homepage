@@ -1,0 +1,239 @@
+@use "../util/" as u;
+
+@layer layout {
+  :root {
+    --spacing-700: calc(120 / 16 * 1rem);
+    --spacing-600: calc(60 / 16 * 1rem);
+    --spacing-500: calc(40 / 16 * 1rem);
+    --spacing-400: calc(32 / 16 * 1rem);
+    --spacing-300: calc(23 / 16 * 1rem);
+    --spacing-200: calc(16 / 16 * 1rem);
+    --spacing-175: calc(14 / 16 * 1rem);
+    --spacing-100: calc(8 / 16 * 1rem);
+
+    --br-10: calc(10 / 16 * 1rem);
+    --wrapper-size: calc(1120 / 16 * 1rem);
+  }
+
+  html {
+    color-scheme: light;
+  }
+
+  body {
+    color: var(--c-dark-grey);
+    margin: 0;
+  }
+
+  .wrapper {
+    inline-size: min(100% - var(--spacing-300) * 2, var(--wrapper-size));
+    margin-inline: auto;
+  }
+
+  .warning {
+    position: fixed;
+    top: 0;
+    inline-size: 100%;
+    background-color: var(--c-very-dark-grey);
+    color: var(--c-white);
+    padding-inline: var(--spacing-100);
+    padding-block: var(--spacing-100);
+    text-align: center;
+
+    @supports (scroll-marker-group: after) {
+      display: none;
+    }
+  }
+
+  /* header */
+
+  #hamburger {
+    display: none;
+
+    &:checked {
+      & + label {
+        span {
+          background-color: var(--c-dark-grey);
+
+          &:nth-of-type(1) {
+            transform: rotate(45deg);
+            top: 0.5em;
+            left: 3px;
+          }
+
+          &:nth-of-type(2) {
+            inline-size: 0;
+            opacity: 0;
+          }
+
+          &:nth-of-type(3) {
+            transform: rotate(-45deg);
+            top: calc(17px + 0.5em);
+            left: 3px;
+          }
+        }
+      }
+
+      & ~ .site-header__nav {
+        display: block;
+      }
+
+      & ~ .site-header__logo {
+        display: none;
+      }
+    }
+  }
+
+  .site-header {
+    color: var(--c-white);
+    position: absolute;
+    inset-inline-start: 0;
+    padding-block: 47px;
+    inline-size: 100%;
+    display: flex;
+    align-items: center;
+    transition: background-color 0.3s ease-in;
+
+    &:has(#hamburger:checked) {
+      background-color: var(--c-white);
+      color: var(--c-black);
+      justify-content: space-between;
+    }
+
+    &__logo {
+      inline-size: 61px;
+      block-size: 13px;
+      margin-inline: auto;
+    }
+
+    &__hamburger {
+      margin-inline-start: var(--spacing-300);
+      cursor: pointer;
+      inline-size: 25px;
+      block-size: calc(22px + 1em);
+      position: relative;
+      // border: 2px solid red;
+      span {
+        display: block;
+        background-color: var(--c-white);
+        block-size: 3px;
+        inline-size: 100%;
+        position: absolute;
+        left: 0;
+        transition-duration: 0.3s;
+        transition-property: all;
+        transition-timing-function: ease-in;
+        transform-origin: left center;
+
+        &:nth-of-type(1) {
+          top: 0.5em;
+        }
+
+        &:nth-of-type(2) {
+          top: calc(6px + 0.5em);
+        }
+
+        &:nth-of-type(3) {
+          top: calc(12px + 0.5em);
+        }
+      }
+    }
+
+    &__nav {
+      display: none;
+      margin-inline-end: var(--spacing-300);
+
+      &-list {
+        display: flex;
+        gap: 31px;
+      }
+
+      a {
+        color: inherit;
+        font-weight: 600;
+        padding-block: 0.5em;
+        display: inline-block;
+        position: relative;
+      }
+    }
+  }
+
+  /* about block */
+
+  .about {
+    display: grid;
+
+    img {
+      inline-size: 100%;
+      block-size: 100%;
+      object-fit: cover;
+    }
+
+    &__content {
+      padding-block: u.rem(48);
+      padding-inline: min(8%, 100px);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: var(--spacing-200);
+    }
+  }
+
+  .attribution {
+    text-align: center;
+    margin: var(--spacing-300) var(--spacing-200);
+  }
+
+  @include u.breakpoint("medium") {
+    .site-header {
+      padding-block: 0;
+      inline-size: auto;
+      inset: 71px auto auto 71px;
+      gap: 50px;
+
+      &:has(#hamburger:checked) {
+        background-color: transparent;
+        color: var(--c-white);
+        justify-content: flex-start;
+      }
+
+      &__logo {
+        order: -1;
+      }
+
+      &__hamburger {
+        display: none;
+      }
+
+      &__nav {
+        display: block;
+        margin-inline-end: 0;
+
+        a {
+          &::after {
+            content: "";
+            position: absolute;
+            inline-size: 70%;
+            block-size: 2px;
+            left: 50%;
+            translate: -50%;
+            bottom: 0;
+            background-color: var(--c-white);
+            display: none;
+          }
+
+          &:hover::after {
+            display: inline-block;
+          }
+        }
+      }
+    }
+
+    #hamburger:checked ~ .site-header__logo {
+      display: block;
+    }
+
+    .about {
+      grid-template-columns: 3fr 4fr 3fr;
+    }
+  }
+}

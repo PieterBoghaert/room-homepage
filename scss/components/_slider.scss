@@ -1,0 +1,146 @@
+@use "../util/" as u;
+
+.hero-slider {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: 100%;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+
+  --current-position-anchor: --carousel-image-1;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    scroll-behavior: smooth;
+  }
+
+  scroll-marker-group: after;
+
+  &::scroll-marker-group {
+    display: none;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 1rem;
+  }
+
+  &::scroll-button(*) {
+    position: fixed;
+    position-anchor: var(--current-position-anchor);
+    font: inherit;
+    background-color: var(--c-black);
+    border: 0;
+    font-weight: 700;
+    transition: background-color 0.3s ease-in;
+    inline-size: 80px;
+    block-size: 80px;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 25%;
+    cursor: pointer;
+    inset-block-start: calc(anchor(end) - 80px);
+
+    &:hover,
+    &:focus,
+    &:disabled {
+      background-color: var(--c-dark-grey);
+    }
+
+    &:disabled {
+      cursor: default;
+    }
+  }
+  &::scroll-button(left) {
+    content: "";
+    inset-inline-end: calc(anchor(end) + 80px);
+    background-image: url("/images/icon-angle-left.svg");
+  }
+
+  &::scroll-button(right) {
+    content: "";
+    inset-inline-end: calc(anchor(end));
+    background-image: url("/images/icon-angle-right.svg");
+  }
+
+  &__item {
+    scroll-snap-align: center;
+  }
+
+  &__image {
+    img {
+      inline-size: 100%;
+      block-size: 100%;
+      object-fit: cover;
+    }
+  }
+
+  &__content {
+    padding-inline: min(8%, 100px);
+    padding-block: 120px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    gap: 2em;
+  }
+
+  &__cta {
+    letter-spacing: 12.5px;
+    text-transform: uppercase;
+    transition: color 0.3s ease-in;
+    position: relative;
+
+    &::after {
+      content: "";
+      display: inline-block;
+      background-image: url("/images/icon-arrow.svg");
+      inline-size: 40px;
+      block-size: 12px;
+      margin-inline-start: 1.2em;
+      transition: margin 0.3s ease-in, opacity 0.3s ease-in;
+    }
+
+    &:hover {
+      color: var(--c-dark-grey);
+
+      &::after {
+        margin-inline-start: 1.6em;
+        opacity: 0.3;
+      }
+    }
+  }
+}
+
+@include u.breakpoint("medium") {
+  .hero-slider {
+    anchor-name: --carousel;
+    &::scroll-button(*) {
+      inset-inline-end: auto;
+      inset-block-start: calc(anchor(end) - 80px);
+      position-anchor: --carousel;
+    }
+
+    &::scroll-button(left) {
+      inset-inline-start: calc(anchor(center) + 10%);
+    }
+
+    &::scroll-button(right) {
+      inset-inline-start: calc(anchor(center) + 10% + 80px);
+    }
+
+    &__item {
+      display: flex;
+    }
+    &__image {
+      flex-basis: 60%;
+    }
+
+    &__content {
+      flex-basis: 40%;
+    }
+  }
+}
